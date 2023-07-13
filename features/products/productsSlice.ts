@@ -62,8 +62,8 @@ const filterItems = (
 
 export const getUniqueAttributesList = (items: ProductItem[]) => {
   /**
-   * q3
-   * sd
+   * input: ProductItem[] (filtered/entire datasets)
+   * returns 3 lists with unique values (based on `id`): brands, qualities, sizes
    */
   // https://stackoverflow.com/a/67322087/592737
   //arr.filter((a, i) => arr.findIndex((s) => a.age === s.age) === i) // [{"name":"Joe", "age":17}, {"name":"Carl", "age": 35}]
