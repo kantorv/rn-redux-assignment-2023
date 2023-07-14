@@ -34,6 +34,10 @@ a - run on Android
 ```
 
 
+### Xstate version:
+- [XSTATE version](https://github.com/kantorv/rn-redux-assignment-2023/tree/xstate) - same assignment, but with Xstate instead of Redux.
+
+
 
 # Learn More
 
