@@ -2,10 +2,11 @@
 ### Same Assignment but with XSTATE instead of REDUX
 
 ### Files
-* `./app` : redux store setup
-* `./components`: Header component
-* `./features/product` redux reducer logic
-* `./App.tsx` redux enabled App 
+
+* `./products-xstate` app logic
+* `./App.tsx`
+* `./packages.json`
+
 ### Install packages
 ```bash
 
