@@ -1,4 +1,6 @@
 
+### Same Assignment but with XSTATE instead of REDUX
+
 ### Files
 * `./app` : redux store setup
 * `./components`: Header component
