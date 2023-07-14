@@ -9,12 +9,8 @@
  */
 import React, {useEffect} from 'react';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {useAppSelector} from '../app/hooks';
 
-import {
-  selectFilter,
-  selectFilteredItems,
-} from '../features/products/productsSlice';
+
 
 import {
   StyleSheet,
@@ -23,11 +19,22 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import { ProductsFilterMachineContext, selectFilter,selectFilteredItems,selectItems } from './mainmachine';
+import { useSelector } from '@xstate/react';
 
 const Header = (): React.ReactNode => {
   const isDarkMode = useColorScheme() === 'dark';
-  const filter = useAppSelector(selectFilter);
-  const filteredItems = useAppSelector(selectFilteredItems);
+
+
+  const svc = ProductsFilterMachineContext.useActorRef()
+
+  //const items = useSelector(svc, selectItems);
+  const filter = useSelector(svc, selectFilter);
+  const filteredItems = useSelector(svc, selectFilteredItems);
+
+
+
+
 
   useEffect(() => {
     console.log('[Headed.tsx] useEffect filter updated', filter);

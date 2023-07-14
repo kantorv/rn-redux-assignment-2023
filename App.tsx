@@ -16,10 +16,13 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import Header from './components/Header';
-import {Provider} from 'react-redux';
-import {store} from './app/store';
-import {ProductsCards} from './features/products/ProductsCards';
+import Header from './products-xstate/Header';
+
+import {ProductsCards} from './products-xstate/ProductsCards';
+
+import { ProductsFilterMachineContext } from './products-xstate/mainmachine'
+
+
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -55,9 +58,11 @@ const Wrapper = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <App />
-    </Provider>
+  
+      <ProductsFilterMachineContext.Provider>
+        <App />
+      </ProductsFilterMachineContext.Provider>
+  
   );
 };
 

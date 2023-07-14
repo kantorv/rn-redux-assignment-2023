@@ -1,33 +1,69 @@
 import React, {useEffect, useState} from 'react';
-import {useAppSelector, useAppDispatch} from '../../app/hooks';
+import { useSelector } from '@xstate/react';
 
-import {
-  selectItems,
-  selectFilter,
-  filterBy,
-  selectFilteredItems,
-  loadProductsAsync,
-  getUniqueAttributesList
-} from './productsSlice';
+
 import {ScrollView, StyleSheet, Text, View, Pressable} from 'react-native';
 //import React from 'react';
-
+import { ProductsFilterMachineContext, selectFilter,selectFilteredItems,selectItems } from './mainmachine';
+import { getUniqueAttributesList } from './helpers'
 const ProductsCards = () => {
-  const items: ProductItem[] = useAppSelector(selectItems);
-  const {brands, qualities, sizes} = getUniqueAttributesList(items);
 
-  const filter = useAppSelector(selectFilter);
-  const filteredItems = useAppSelector(selectFilteredItems);
-  const dispatch = useAppDispatch();
+
+    const svc = ProductsFilterMachineContext.useActorRef()
+
+    const items = useSelector(svc, selectItems);
+    const filter = useSelector(svc, selectFilter);
+    const filteredItems = useSelector(svc, selectFilteredItems);
+
+
+    // const {
+    //   items,
+    //   filter,
+    //   filteredItems,
+
+    // } = useSelector(svc, (state)=>{
+
+    //   return {
+    //     items:  state.context.items,
+    //     filter:  state.context.filter,
+    //     filteredItems: state.context.filteredItems,
+    //   }
+    // })
+
+
+ // const items: ProductItem[] = useAppSelector(selectItems);
+  const {brands, qualities, sizes} = getUniqueAttributesList(items); // as {brands:ProductBrand[],qualities:ProductQuality[],sizes:ProductSize[]}
+
+  // const filter = useAppSelector(selectFilter);
+  // const filteredItems = useAppSelector(selectFilteredItems);
+  //const dispatch = useAppDispatch();
 
   const [enabledBrands, setEnabledBrands] = useState<Array<number>>([]);
   const [enabledQualities, setEnabledQualities] = useState<Array<number>>([]);
   const [enabledSizes, setEnabledSizes] = useState<Array<number>>([]);
 
+
+
+  const filterBy = (obj:FilterPayloadParams)=>{
+    console.log("filterBy called", obj)
+
+    svc.send({
+      type: "EVENTS.DATA.FILTER_BY_ATTRIBUTE",
+      payload:obj
+    })
+  }
+
+  useEffect(() => {
+    //load products on startup
+    if(undefined === items) return
+    console.log('[ProductsCards.tsx] items updated', items.length);
+    //dispatch(loadProductsAsync());
+  }, [items]);
+
   useEffect(() => {
     //load products on startup
     console.log('[ProductsCards.tsx] useEffect called');
-    dispatch(loadProductsAsync());
+    //dispatch(loadProductsAsync());
   }, []);
 
   useEffect(() => {
@@ -66,7 +102,7 @@ const ProductsCards = () => {
               style={[styles.button,
                 item.id === filter.brand ? styles.pressableSelected :
                 !enabledBrands.includes(item.id) ? styles.pressableDisabled : styles.pressableEnabled]}
-              onPress={() =>dispatch(filterBy({name:'brand',id: item.id}))}
+              onPress={() =>filterBy({name:'brand',id: item.id})}
             >
               <Text>{item.id}</Text>
               <Text>{item.name}</Text>
@@ -89,7 +125,7 @@ const ProductsCards = () => {
                 style={[styles.button,
                 item.id === filter.quality ? styles.pressableSelected :
                   enabledQualities.includes(item.id) ? styles.pressableEnabled : styles.pressableDisabled]}
-                onPress={() => dispatch(filterBy({name:'quality',id: item.id}))}
+                onPress={() => filterBy({name:'quality',id: item.id})}
               >
                 <Text>{item.id}</Text>
                 <Text>{item.name}</Text>
@@ -110,7 +146,7 @@ const ProductsCards = () => {
                 item.id === filter.size ? styles.pressableSelected :
                 enabledSizes.includes(item.id) ? styles.pressableEnabled : styles.pressableDisabled]}
             //  onPress={() => dispatch(filterBySize(item.id))}
-              onPress={() => dispatch(filterBy({name:'size',id: item.id}))}
+              onPress={() => filterBy({name:'size',id: item.id})}
             >
               <Text>{item.id}</Text>
               <Text>{item.name}</Text>

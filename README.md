@@ -15,6 +15,9 @@ yarn install
 ```bash
 # init from scratch
 npx react-native init ProjectName 
+cd ProjectName
+yarn add @reduxjs/toolkit react-redux # redux version
+yarn add xstate @xstate/react # xstate version
 
 ```
 
