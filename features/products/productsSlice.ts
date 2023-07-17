@@ -7,6 +7,7 @@ export interface ProductsState {
   items: ProductItem[];
   filter: ProductsFilter;
   filteredItems: ProductItem[];
+  selectedItem: ProductItem | null
 }
 
 const initialState: ProductsState = {
@@ -14,6 +15,7 @@ const initialState: ProductsState = {
   items: [],
   filter: {},
   filteredItems: [],
+  selectedItem: null
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -111,6 +113,19 @@ export const productsSlice = createSlice({
         state.filter.size,
       );
       state.filteredItems = filteredItems;
+
+
+      const {brand,quality, size } = state.filter
+      if ([brand,quality, size ].includes(undefined)){
+        state.selectedItem = null
+
+      }
+      else{
+        if (filteredItems.length === 1){
+          state.selectedItem = filteredItems[0]
+        }
+      }
+
     },
   },
   extraReducers: builder => {
@@ -134,6 +149,7 @@ export const {filterBy} = productsSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
+export const selectSelectedItem = (state: RootState) => state.products.selectedItem;
 export const selectItems = (state: RootState) => state.products.items;
 export const selectFilter = (state: RootState) => state.products.filter;
 export const selectFilteredItems = (state: RootState) =>
