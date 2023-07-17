@@ -114,17 +114,15 @@ export const productsSlice = createSlice({
       );
       state.filteredItems = filteredItems;
 
+      state.selectedItem = null
 
       const {brand,quality, size } = state.filter
-      if ([brand,quality, size ].includes(undefined)){
-        state.selectedItem = null
-
-      }
-      else{
+      if (![brand,quality, size ].includes(undefined)){
         if (filteredItems.length === 1){
           state.selectedItem = filteredItems[0]
         }
       }
+
 
     },
   },
