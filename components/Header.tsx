@@ -14,6 +14,7 @@ import {useAppSelector} from '../app/hooks';
 import {
   selectFilter,
   selectFilteredItems,
+  selectSelectedItem
 } from '../features/products/productsSlice';
 
 import {
@@ -28,10 +29,11 @@ const Header = (): React.ReactNode => {
   const isDarkMode = useColorScheme() === 'dark';
   const filter = useAppSelector(selectFilter);
   const filteredItems = useAppSelector(selectFilteredItems);
+  const selectedItem = useAppSelector(selectSelectedItem);
 
-  useEffect(() => {
-    console.log('[Headed.tsx] useEffect filter updated', filter);
-  }, [filter]);
+  // useEffect(() => {
+  //   console.log('[Headed.tsx] useEffect selectedItem updated', selectedItem);
+  // }, [selectedItem]);
 
   return (
     <ImageBackground
@@ -79,8 +81,8 @@ const Header = (): React.ReactNode => {
               textAlign: "left"
             },
           ]}>
-          {filteredItems.length === 1 ?
-            `${filteredItems[0].fullName}`
+          {selectedItem !== null ?
+            `${selectedItem.fullName}`
             :
             `Item is not selected`
           }
